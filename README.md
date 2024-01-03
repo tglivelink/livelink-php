@@ -25,6 +25,9 @@ $str = $cli->do_request($req,"ApiRequest", array(
 // 创建请求客户端
 $cli = new Client("your secKey", "your sigKey");
 
+// 拉起小程序是，使用另一种签名方式（md5_fixed）
+// $cli = new Client("your secKey", "your sigKey",$signer=SIGN_MD5_FIXED);
+
 // 转换签名、code等参数 
 $args = $cli->trans_args($req)
 
