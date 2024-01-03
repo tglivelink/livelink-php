@@ -2,6 +2,10 @@
 
 namespace Livelink\Client;
 
+const CODE_ECB = "ecb";
+const SIGN_MD5 = "md5";
+const SIGN_MD5_FIXED = "md5_fixed";
+
 /**
  * PlatUser 平台用户信息 
  */
@@ -136,7 +140,7 @@ class Client
      */
     public $domain;
 
-    function __construct($secKey, $sigKey, $signer = "md5", $coder = "ecb")
+    function __construct($secKey, $sigKey, $signer = SIGN_MD5, $coder = CODE_ECB)
     {
         $this->secKey = $secKey;
         $this->sigKey = $sigKey;
@@ -211,7 +215,7 @@ class Client
      */
     public function encrypt_code($text)
     {
-        if ($this->coder == "ecb") {
+        if ($this->coder == CODE_ECB) {
             return base64_encode(openssl_encrypt($text, "AES-128-ECB", $this->secKey, OPENSSL_RAW_DATA));
         }
         return "";
@@ -225,7 +229,7 @@ class Client
      */
     public function decrypt_code($text)
     {
-        if ($this->coder == "ecb") {
+        if ($this->coder == CODE_ECB) {
             return openssl_decrypt(base64_decode($text), "AES-128-ECB", $this->secKey, OPENSSL_RAW_DATA);
         }
         return "";
@@ -239,9 +243,9 @@ class Client
      */
     public function sign_with_kvs($kvs)
     {
-        if ($this->signer == "md5") {
+        if ($this->signer == SIGN_MD5) {
             return $this->sign_with_md5($kvs);
-        } else if ($this->signer == "md5_fixed") {
+        } else if ($this->signer == SIGN_MD5_FIXED) {
             return $this->sign_with_md5_fixed($kvs);
         }
         return "";
